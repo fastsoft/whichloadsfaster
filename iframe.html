@@ -1,0 +1,158 @@
+<html>
+<head>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.frame {
+    width: 49%;
+    height: 100%;
+}
+iframe {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+span {
+    width: 10em;
+}
+input, span {
+    margin: 1em;
+}
+
+input[type="text"] {
+    width: 200px;
+}
+
+.xfactor {
+    text-align: center;
+    width: 421px;
+    height: 109px;
+    padding: 20px 0 0 0;
+    background: transparent url(xfactor_bg.png) no-repeat top left;
+    font-size: 36pt;
+    text-decoration: shadow;
+    position: absolute;
+    top: 40%;
+    left: 10%;
+}
+.good {
+    color: #C1D82F;
+    font-weight: bold;
+}
+</style>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.url.js"></script>
+<script>
+
+var start = [new Date(), new Date()];
+var duration = [0, 0];
+
+load_frame = function(i, j) {
+    // Starting timestamp
+    start[i] = new Date();
+    duration[i] = 0; 
+
+    // Set frame address to whatever's in the input box
+    $('#frame' + i).attr('src', $('#url' + i).val());
+
+    // Update loading message
+    $('#time' + i).text('loading...');
+};
+
+after_load = function(i, j) {
+
+    // Grab the ending timestamp
+    var end = new Date();
+
+    // Display load time
+    var dur = end.getTime() - start[i].getTime();
+    duration[i] = dur;
+    $('#time' + i).text(dur + ' ms');
+
+    // Update our url to whatever we landed at (including redirect)
+    var us = frames[i].location.href;
+    $('#url' + i).val(us);
+
+    // Sync the other frame if we have it turned on
+    if ($('#sync').val() === 'on') {
+
+        // Find the relative url
+        var them = frames[j].location.href;
+        var root = them.indexOf($.url.setUrl(them).attr('relative'));
+        var rel = them.substr(0, root) + $.url.setUrl(us).attr('relative');
+
+        // If they're not there already, take them there
+        if (rel != them) {
+            $('#url' + j).val(rel);
+            load_frame(i, j);
+            load_frame(j, i);
+        }
+    }
+
+    // Calculate benefit
+    if (duration[i] && duration[j]) {
+        if (duration[i] < duration[j]) {
+            var benefit = duration[j]/duration[i];
+            $('#x' + i).html('<div class="xfactor">' + + benefit.toFixed(2) + ' &times; faster</div>');
+            $('#x' + j).html('');
+        }
+        else {
+            var benefit = duration[i]/duration[j];
+            $('#x' + j).html('<div class="xfactor">' + + benefit.toFixed(2) + ' &times; faster</div>');
+            $('#x' + i).html('');
+        }
+    }
+
+};
+
+$(window).ready(function(){
+    $('#url0').focus();
+
+    $('#frame0').load(function() { after_load(0, 1); });
+    $('#frame1').load(function() { after_load(1, 0); });
+
+    $('#go').click(function () {
+        load_frame(1, 0);
+        load_frame(0, 1);
+    });
+});
+</script>
+
+</head>
+<body>
+
+<div id="header" style="width:100%;">
+<form>
+<label for="url0">URL1:</label>
+<input id="url0" type="text" value="http://webdev.fastsoft.com" />
+<span id="time0"></span>
+
+<label for="url1">URL2:</label>
+<input id="url1" type="text" value="http://www.fastsoft.com"/>
+<span id="time1"></span>
+
+<input id="go" value="Go" type="button" />
+
+<label for="sync">sync browsing</label>
+<input id="sync" type="checkbox" checked="checked" />
+</form>
+</div>
+
+<div class="frame" id="div0" style="float:left">
+<span id="x0" class="good"></span>
+<iframe id="frame0" src="about:blank">one</iframe>
+</div>
+
+<div class="frame" id="div1" style="float:right">
+<span id="x1" class="good"></span>
+<iframe id="frame1" src="about:blank">two</iframe>
+</div>
+
+</body>
+</html>

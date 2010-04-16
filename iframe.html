@@ -66,6 +66,9 @@ load_frame = function(i, j) {
         $('#url'+i).val(url);
     }
 
+    // Clear current frame
+    $('#frame'+i).attr('src', 'about:blank');	
+
     // Starting timestamp
     start[i] = new Date();
     duration[i] = 0; 
@@ -165,8 +168,7 @@ $(window).ready(function(){
 <div class="frame" id="div0" style="float:left">
 
     <label for="url0">URL:</label>
-    <!--<input id="url0" type="text" value="http://webdev.fastsoft.com" />-->
-    <input id="url0" type="text" value="jquery.min.js" tabindex=1 />
+    <input id="url0" type="text" value="google.com" tabindex=1 />
     <span id="time0"></span>
 
     <span id="x0" class="good"></span>
@@ -177,8 +179,7 @@ $(window).ready(function(){
 <div class="frame" id="div1" style="float:right">
 
     <label for="url1">URL:</label>
-    <!--<input id="url1" type="text" value="http://www.fastsoft.com"/>-->
-    <input id="url1" type="text" value="jquery.url.js" tabindex=2 />
+    <input id="url1" type="text" value="bing.com" tabindex=2 />
     <span id="time1"></span>
     <input id="go" value="Go" type="submit" tabindex=3 />
 

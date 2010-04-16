@@ -43,8 +43,11 @@ input[type="text"] { width: 50%; }
 }
 </style>
 
-<script type="text/javascript" src="jquery.min.js"></script>
+<link type="text/css" href="css/smoothness/jquery-ui-1.8.custom.css" rel="stylesheet" />  
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.custom.min.js"></script>
 <script type="text/javascript" src="jquery.url.js"></script>
+
 <script>
 
 var start = [new Date(), new Date()];
@@ -156,6 +159,28 @@ $(window).ready(function(){
     $('#url0, #url1').keyup(function (e) {
         if (e.keyCode == 13) {reload_frames();}
     });
+
+
+    $("#multiple-form").dialog({
+        autoOpen: false, height: 300, width: 350, modal: true,
+        buttons: {
+            'Go': function() {
+                var bValid = true;
+                if (bValid) {
+                    $(this).dialog('close');
+                }
+            },
+            'Cancel': function() {
+                $(this).dialog('close');
+            }
+        },
+        close: function() {
+        }
+    });
+
+    $('#go').button();
+    $('#repeat').button();
+    $('#multiple').button().click(function () { $('#multiple-form').dialog('open'); });
 });
 </script>
 
@@ -165,10 +190,24 @@ $(window).ready(function(){
 <div id="header" style="width:100%;">
 </div>
 
+<div id="multiple-form" style="display:none;">
+    <p>Multiple pages</p>
+    <table>
+    <tr>
+        <td><input type="text" id="url0-0" class="text ui-widget-content ui-corner-all" /></td>
+        <td><input type="text" id="url0-1" class="text ui-widget-content ui-corner-all" /></td>
+    </tr>
+    <tr>
+        <td><input type="text" id="url1-0" class="text ui-widget-content ui-corner-all" /></td>
+        <td><input type="text" id="url1-1" class="text ui-widget-content ui-corner-all" /></td>
+    </tr>
+    </table>
+</div>
+
 <div class="frame" id="div0" style="float:left">
 
     <label for="url0">URL:</label>
-    <input id="url0" type="text" value="google.com" tabindex=1 />
+    <input id="url0" type="text" class="text ui-widget-content ui-corner-all" value="google.com" tabindex=1 />
     <span id="time0"></span>
 
     <span id="x0" class="good"></span>
@@ -179,9 +218,11 @@ $(window).ready(function(){
 <div class="frame" id="div1" style="float:right">
 
     <label for="url1">URL:</label>
-    <input id="url1" type="text" value="bing.com" tabindex=2 />
+    <input id="url1" type="text" class="text ui-widget-content ui-corner-all" value="bing.com" tabindex=2 />
     <span id="time1"></span>
-    <input id="go" value="Go" type="submit" tabindex=3 />
+    <button id="go" tabindex=3 >GO</button>
+    <button id="repeat" tabindex=4 >Repeat</button>
+    <button id="multiple" tabindex=5 >Multiple</button>
 
     <span id="x1" class="good"></span>
     <iframe id="frame1">two</iframe>

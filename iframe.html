@@ -19,7 +19,7 @@
     <div id="features">
         <a id="repeat" href="#" tabindex=4 >Repeat</a>
         <a id="race" href="#" tabindex=5 >Race</a>
-        <a id="cache" href="#" tabindex=4 >Clear my cache</a>
+        <a id="cache" href="#" tabindex=6 >Clear my cache</a>
     </div>
 
     <div id="gobar">
@@ -38,7 +38,8 @@
 
 </div>
 
-<div id="xfactor" class="good"> </div>
+<div id="xfactor" class="overlay"><div></div></div>
+<div id="average" class="overlay"><div></div></div>
 
 <div class="frame" id="div0" style="float:left">
 
@@ -67,8 +68,12 @@
             <input type="radio" name="times" id="10times" value="10" /><label for="10times">10 times</label>
         </li>
         <li>
+            <input type="radio" name="times" id="100times" value="100" /><label for="100times">100 times</label>
+        </li>
+        <li>
             <input type="radio" name="times" id="custom" value="custom" /><label for="custom">Custom</label>
-            <input type="text" id="cutom_text" for="custom" />
+            <input type="text" id="custom_times" class="text ui-widget-content ui-corner-all" style="width: 40px;"/>
+            <p id="custom_times_error"></p>
         </li>
     </ul>
     <p>
@@ -99,6 +104,9 @@
     </table>
 </div>
 
+<div id="cache-form">
+
+</div>
 
 </body>
 </html>

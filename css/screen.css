@@ -30,26 +30,31 @@ iframe {
     z-index: 10; 
 }
 
-#xfactor {
-    width: 421px;
+.overlay {
+    display: none;
     position: absolute;
-    top: 40%;
+    width: 421px;
+    height: 109px;
     left: 50%;
-    margin-left: -211px;
+    margin: 0 0 0 -211px;
+    padding: 17px 0 0 0;
+    background: transparent url(../img/xfactor_bg.png) no-repeat top center;
+    color: #C1D82F;
+    text-align: center;
+    font-weight: bold;
     z-index: 10;
 }
-.xfactor {
+.overlay h2 { font-size: 36px; margin: 0; padding: 0; }
+.overlay p { font-size: 18px; margin: 0; padding: 0; }
+
+#xfactor { top: 40%; }
+#average { 
+    width: 426px;
     height: 109px;
-    text-align: center;
-    padding: 27px 0 0 0;
-    background: transparent url(../img/xfactor_bg.png) no-repeat top left;
-    font-size: 36px;
-    text-decoration: shadow;
+    bottom: 0; font-size: 18px; color: white;
+    background: transparent url(../img/square_bg.png) no-repeat top center;
 }
-.good {
-    color: #C1D82F;
-    font-weight: bold;
-}
+
 
 #repeat-form ul li { list-style: none; margin: 5px; }
 #race-form table { text-align: center; }

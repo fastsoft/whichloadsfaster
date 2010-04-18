@@ -65,3 +65,12 @@ iframe {
     width: 250px;
 }
 
+#data-form textarea { 
+    width: 90%; height: 450px;
+    margin: 0 2em; 
+    padding: 1em;
+    border: solid 1px black;
+    background: #eeeeee;
+    overflow: auto;
+}
+

@@ -55,18 +55,15 @@ load_frame = function(i, j) {
 };
 
 display_runs = function() {
-    var msg = '<ul>';
+    msg = '';
     $.each(runs, function(key, value) {
-        msg += '<li>' + key + ':';
-        msg += '<p> totals:' + value.total_time[0] + ':' + value.total_time[1] + '</p>';
-        msg += '<ul>';
+        msg += key + '\n\n';
+        msg += 'right_ms,left_ms\n';
         $.each(value.history, function(key, value) {
-            msg += '<li>' + value + '</li>';
+            msg += value[0] + ',' + value[1] + '\n';
         });
-        msg += '</ul>';
-        msg += '</li>';
+        msg += '\n\n';
     });
-    msg += '</ul>';
     return msg;
 };
 
@@ -185,11 +182,12 @@ $(window).ready(function(){
         if (e.keyCode == 13) {reload_frames();}
     });
 
+    $('#repeat').click(function () {
     $("#repeat-form").dialog({
-        autoOpen: false, width: 250, modal: true, top: '20%',
-        title: 'Repeat',
+        width: 300, height: 300,
+        modal: true, title: 'Repeat',
         buttons: {
-            'Go': function() {
+            'GO': function() {
                 $('#custom_times_error').removeClass('ui-state-highlight').hide();
 
                 var value = $('#times input[name="times"]:checked').val();
@@ -216,52 +214,34 @@ $(window).ready(function(){
         close: function() {
         }
     });
-
-    $("#race-form").dialog({
-        autoOpen: false, width: 550, modal: true,
-        title: 'Race!',
-        buttons: {
-            'Go': function() {
-                var bValid = true;
-                if (bValid) {
-                    $(this).dialog('close');
-                }
-            },
-            'Cancel': function() {
-                $(this).dialog('close');
-            }
-        },
-        close: function() {
-        }
     });
 
-    $('#repeat').click(function () { $('#repeat-form').dialog('open'); });
-    $('#race').click(function () { $('#race-form').dialog('open'); });
+    $('#race').click(function () {
+        $("#race-form").dialog({
+            width: 400, height: 250,
+            modal: true, title: 'Race!',
+            buttons: {
+                'GO': function() { $(this).dialog('close'); },
+                'Cancel': function() { $(this).dialog('close'); }
+            },
+            close: function() { }
+        });
+    });
+
+    $('#data').click(function () {
+        $("#data-form").dialog({
+            width: 600, height: 600,
+            modal: true, title: 'Grab my data',
+            open: function (event, ui) {
+                $('#data-form textarea').val(display_runs());
+            },
+            buttons: { 'OK': function() {$(this).dialog('close')}, },
+            close: function() {}
+        });
+    });
 
     $('button').button();
     $('.load_time').hide();
 
-    $('#cache').click(function () {
-        $("#cache-form").dialog({
-            modal: true,
-            title: 'test',
-            open: function (event, ui) {
-                $('#cache-form').html(display_runs());
-            },
-            buttons: {
-                'Go': function() {
-                    var bValid = true;
-                    if (bValid) {
-                        $(this).dialog('close');
-                    }
-                },
-                'Cancel': function() {
-                    $(this).dialog('close');
-                }
-            },
-            close: function() {
-            }
-        }).open();
-    });
 
 });

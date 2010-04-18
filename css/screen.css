@@ -55,6 +55,9 @@ iframe {
     background: transparent url(../img/square_bg.png) no-repeat top center;
 }
 
+#progress { z-index: 100; width: 300px; margin: 12px auto 6px auto; }
+#progress .ui-widget-header { background: #C1D82F !important; }
+
 
 #repeat-form ul li { list-style: none; margin: 5px; }
 #race-form table { text-align: center; }

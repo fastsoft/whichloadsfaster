@@ -40,13 +40,13 @@ load_frame = function(i, j) {
     // Clear overlays box
     if (repeat_total) {
         $('#xfactor div').html(
-            '<h2> ' + (Math.max(
-                0, 100 * (repeat_total-repeat-1) / repeat_total
-            )).toFixed(0) + 
-            '% </h2>' +
+            '<p> <div id="progress"></div> </p>' +
             '<p> ' + (repeat_total-repeat) + 
             ' out of ' + repeat_total+ '</p>'
         );
+        $('#progress').progressbar({value: 
+            100 * (repeat_total-repeat) / repeat_total
+        });
         $('#xfactor').show();
         $('#average').hide();
     } else {
@@ -77,6 +77,11 @@ comparison_txt = function(benefit) {
 
     if (b === '1.0') {
         return 'it\'s a tie!';
+    /*} else if (b < 2)  {
+        b = (100 * (b-1)).toFixed(0);
+        if (benefit > 1.0) return b + '% faster &rarr;';
+        else return '&larr; ' + b + '% faster';
+    */
     } else {
         if (benefit > 1.0) return b + ' &times; faster &rarr;';
         else return '&larr; ' + b + ' &times; faster';
@@ -211,7 +216,6 @@ $(window).ready(function(){
         close: function() {
         }
     });
-    //$('#times').buttonset();
 
     $("#race-form").dialog({
         autoOpen: false, width: 550, modal: true,

@@ -251,6 +251,7 @@ $(window).ready(function(){
         });
     });
 
+
     $("#splash").dialog({
         modal: true, title: 'Which loads faster?',
         open: function (event, ui) {
@@ -265,16 +266,63 @@ $(window).ready(function(){
             });
         },
         buttons: { 
-            'Try my own matchup': function() {
-                $(this).dialog('close')
-                $('#url0').focus().select();
-        },},
-        close: function() {}
+            'Try my own matchup': function(){
+                $(this).dialog('close');
+            }
+        },
+        close: function(){ $('#url0').focus().select(); }
     });
     $('#splash-link').click(function(){$('#splash').dialog();});
+
+    $("#framebuster").dialog({
+        autoOpen: false,
+        modal: true, title: 'Framebuster warning',
+        open: function() {
+            $('#framebuster_name').html('');
+            var url = '';
+            if (duration[0] && !duration[1])
+                url = $('#url1').val();
+            else if (duration[1] && !duration[0])
+                url = $('#url0').val();
+            else return;
+            $('#framebuster_name').html('(<b>'+url+'</b>)');
+        },
+        buttons: { 'OK': function() {$(this).dialog('close')}, },
+        close: function() {}
+    });
 
     $('button').button();
     $('.load_time').hide();
 
-
 });
+
+
+
+/* 
+ * iframe buster buster adapted from:
+ * http://stackoverflow.com/questions/1794974/
+ */
+
+$('#frame0').top = null;
+$('#frame1').top = null;
+
+var fr23s = Math.random() * 3000; 
+function slke ( init ) { 
+    function onbeforeunload() { fr23s++ }
+    window.onbeforeunload = onbeforeunload;
+    setInterval( function() {
+        if( window.onbeforeunload != onbeforeunload ) {
+            fr23s = init + 1;
+            window.onbeforeunload = onbeforeunload;
+        }
+        if (fr23s > init ) {
+            fr23s -= 2
+            window.top.location = 'http://which.loadsfaster.com/204';
+            setTimeout(function(){
+                $("#framebuster").dialog('open')
+            }, 1000);
+       }
+   }, 1 );
+};
+slke( fr23s );
+

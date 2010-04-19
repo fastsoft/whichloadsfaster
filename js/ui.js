@@ -1,5 +1,5 @@
 var start = [new Date(), new Date()];
-var duration = [0, 0];
+var duration = [null, null];
 var urls = ['', ''];
 var runs = {};
 var repeat = 0;
@@ -86,6 +86,9 @@ comparison_txt = function(benefit) {
 }
 
 after_load = function(i, j) {
+
+    // Fix iframe bug on firefox that triggers run on load
+    if (duration[i] == null) return;
 
     // Grab the ending timestamp
     var end = new Date();

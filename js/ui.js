@@ -57,7 +57,7 @@ load_frame = function(i, j) {
 display_runs = function() {
     msg = '';
     $.each(runs, function(key, value) {
-        msg += key + '\n\n';
+        msg += unescape(key) + '\n\n';
         msg += 'right_ms,left_ms\n';
         $.each(value.history, function(key, value) {
             msg += value[0] + ',' + value[1] + '\n';
@@ -160,13 +160,15 @@ after_load = function(i, j) {
             if (--repeat == 0) repeat_render = true;
             reload_frames();
         }
-
+        
+        $('.load_time').hide();
+        $('#url0').focus().select();
     }
-    $('#url0').focus().select();
 
 };
 
 reload_frames = function() {
+    duration = [0, 0];
     load_frame(1, 0);
     load_frame(0, 1);
 };
@@ -177,27 +179,36 @@ $(window).ready(function(){
     $('#frame0').load(function() { after_load(0, 1); });
     $('#frame1').load(function() { after_load(1, 0); });
 
-    $('#go').click(reload_frames);
+    $('#go')
+    .button({icons:{primary:'ui-icon-arrowthick-1-e'}})
+    .click(reload_frames);
+
     $('#url0, #url1').keyup(function (e) {
         if (e.keyCode == 13) {reload_frames();}
     });
 
     $('#repeat').click(function () {
     $("#repeat-form").dialog({
-        width: 300, height: 300,
-        modal: true, title: 'Repeat',
+        modal: true, title: 'Repeat this matchup',
+        open: function() {
+            $('#custom_times').focus(function() {
+                $('#custom').attr('checked', 'checked');    
+            });
+        },
         buttons: {
             'GO': function() {
-                $('#custom_times_error').removeClass('ui-state-highlight').hide();
+                $('#custom_times_error')
+                .removeClass('ui-state-highlight').hide();
 
                 var value = $('#times input[name="times"]:checked').val();
-
                 if (value === 'custom')
                     value = $('#custom_times').val();
 
                 value = parseInt(value);
                 if (isNaN(value) || value < 1) {
-                    $('#custom_times_error').addClass('ui-state-highlight').text('positive number please').show();
+                    $('#custom_times_error')
+                    .addClass('ui-state-highlight')
+                    .text('positive number please').show();
                 }
                 else {
                     $(this).dialog('close');
@@ -207,12 +218,9 @@ $(window).ready(function(){
                     reload_frames();
                 }
             },
-            'Cancel': function() {
-                $(this).dialog('close');
-            }
+            'Cancel': function() { $(this).dialog('close'); }
         },
-        close: function() {
-        }
+        close: function() { }
     });
     });
 
@@ -221,8 +229,7 @@ $(window).ready(function(){
             width: 400, height: 250,
             modal: true, title: 'Race!',
             buttons: {
-                'GO': function() { $(this).dialog('close'); },
-                'Cancel': function() { $(this).dialog('close'); }
+                'OK': function() { $(this).dialog('close'); }
             },
             close: function() { }
         });
@@ -234,6 +241,7 @@ $(window).ready(function(){
             modal: true, title: 'Grab my data',
             open: function (event, ui) {
                 $('#data-form textarea').val(display_runs());
+                $('#data-form textarea').focus();
             },
             buttons: { 'OK': function() {$(this).dialog('close')}, },
             close: function() {}

@@ -73,3 +73,6 @@ iframe {
     overflow: auto;
 }
 
+#matchups { text-align: center; }
+#matchups button { margin-top: 1ex; }
+

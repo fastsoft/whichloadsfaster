@@ -248,6 +248,28 @@ $(window).ready(function(){
         });
     });
 
+    $("#splash").dialog({
+        modal: true, title: 'Which loads faster?',
+        open: function (event, ui) {
+            $('#matchups button')
+            .button({icons:{primary:'ui-icon-star'}})
+            .click(function(){
+                var urls = $(this).attr('name').split(':');
+                $('#url0').val(urls[0]);
+                $('#url1').val(urls[1]);
+                $('#splash').dialog('close');
+                reload_frames();
+            });
+        },
+        buttons: { 
+            'Try my own matchup': function() {
+                $(this).dialog('close')
+                $('#url0').focus().select();
+        },},
+        close: function() {}
+    });
+    $('#splash-link').click(function(){$('#splash').dialog();});
+
     $('button').button();
     $('.load_time').hide();
 

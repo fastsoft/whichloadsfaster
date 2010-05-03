@@ -165,7 +165,7 @@ after_load = function(i, j) {
         }
         
         $('.load_time').hide();
-        $('#url0').focus().select();
+        go_focus();
     }
 
 };
@@ -176,8 +176,14 @@ reload_frames = function() {
     load_frame(0, 1);
 };
 
+go_focus = function() {
+    setTimeout(function() {
+        $('#go').focus();
+    }, 10);
+};
+
+
 $(window).ready(function(){
-    $('#url0').focus();
 
     $('#frame0').load(function() { after_load(0, 1); });
     $('#frame1').load(function() { after_load(1, 0); });
@@ -294,7 +300,32 @@ $(window).ready(function(){
     $('button').button();
     $('.load_time').hide();
 
-});
+    // Keep iframes from recieving events
+    $('#frame0').focus(function(){$('#frame0').trigger('blur')});
+    $('#frame1').focus(function(){$('#frame1').trigger('blur')});
+
+    go_focus();
+
+    // Make sure we don't get focus stolen by iframes
+    $('input')
+    .focus(function(){$(this).addClass('hasfocus')})
+    .blur(function(){$(this).removeClass('hasfocus')});
+    $('#go').blur(function(){ 
+        setTimeout(function(){
+            var ok = true;
+            $.each($('input'), function (i,v) {
+                if ($(this).hasClass('hasfocus')) ok = false;
+            });
+            if (ok) { go_focus(); }
+        }, 10);
+    });
+    setInterval(function(){
+        var ok = true;
+        $('input').each(function() {
+            if ($(this).hasClass('hasfocus')) ok = false;
+        });
+        if (ok) { go_focus(); }
+    }, 200);
 
 
 

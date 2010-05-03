@@ -17,21 +17,22 @@
 <div id="header">
 
     <div id="features">
-        <a id="repeat" href="#" tabindex=4 >Repeat</a>
-        <a id="race" href="#" tabindex=5 >Race</a>
-        <a id="data" href="#" tabindex=6 >Grab my data</a>
-        <a id="splash-link" href="#" tabindex=4 >Splash screen</a>
+        <a id="repeat" href="#">Repeat</a>
+        <a id="race" href="#">Race</a>
+        <a id="data" href="#">Grab my data</a>
+        <a id="splash-link" href="#">Splash screen</a>
+        <div id="timeout"></div>
     </div>
 
     <div id="gobar">
     <div style="left:0;">
 
-        <input id="url0" type="text" class="text ui-widget-content ui-corner-all" value="google.com" tabindex=1 />
+        <input id="url0" type="text" class="text ui-widget-content ui-corner-all" value="" tabindex=1 />
 
     </div>
     <div style="right: 0;">
 
-        <input id="url1" type="text" class="text ui-widget-content ui-corner-all" value="bing.com" tabindex=2 />
+        <input id="url1" type="text" class="text ui-widget-content ui-corner-all" value="" tabindex=2 />
         <button id="go" tabindex=3 >GO</button>
 
     </div>
@@ -43,16 +44,18 @@
 <div id="average" class="overlay"><div></div></div>
 
 <div class="frame" id="div0" style="float:left">
+    <div class="frameblocker"></div>
 
     <button id="time0" class="load_time" tabindex=0></button>
-    <iframe id="frame0">one</iframe>
+    <iframe id="frame0" tabindex=-1>one</iframe>
 
 </div>
 
 <div class="frame" id="div1" style="float:right">
+    <div class="frameblocker"></div>
 
     <button id="time1" class="load_time"></button>
-    <iframe id="frame1">two</iframe>
+    <iframe id="frame1" tabindex=-1>two</iframe>
 
 </div>
 

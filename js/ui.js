@@ -250,7 +250,6 @@ $(window).ready(function(){
             modal: true, title: 'Grab my data',
             open: function (event, ui) {
                 $('#data-form textarea').val(display_runs());
-                $('#data-form textarea').focus();
             },
             buttons: { 'OK': function() {$(this).dialog('close')}, },
             close: function() {}
@@ -273,10 +272,11 @@ $(window).ready(function(){
         },
         buttons: { 
             'Try my own matchup': function(){
+                $('#url0').focus().select();
                 $(this).dialog('close');
             }
         },
-        close: function(){ $('#url0').focus().select(); }
+        close: function() { }
     });
     $('#splash-link').click(function(){$('#splash').dialog();});
 
@@ -299,6 +299,20 @@ $(window).ready(function(){
 
     $('button').button();
     $('.load_time').hide();
+
+    // Shortcuts
+    make_shortcut = function(key,link) {
+        $(document).bind('keyup',key,function(){$(link).trigger('click')});
+        if ($(link).is('button')) { link += ' span' } // don't munge jquery buttons
+        $(link).html($(link).text().replace(RegExp('(.*)('+key+')(.*)','i'),'$1<u>$2</u>$3')); // underline shortcut
+    }
+    make_shortcut('r','#repeat');
+    make_shortcut('c','#race');
+    make_shortcut('s','#splash-link');
+    make_shortcut('d','#data');
+    make_shortcut('g','#go');
+    make_shortcut('h','#help-link');
+    make_shortcut('a','#about-link');
 
     // Keep iframes from recieving events
     $('#frame0').focus(function(){$('#frame0').trigger('blur')});
@@ -327,6 +341,9 @@ $(window).ready(function(){
         if (ok) { go_focus(); }
     }, 200);
 
+    // Blur inputs on escape
+    $('input').bind('keydown', 'esc', function(){$(this).blur()});
+});
 
 
 /* 

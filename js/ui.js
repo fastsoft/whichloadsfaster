@@ -5,6 +5,7 @@ var runs = {};
 var repeat = 0;
 var repeat_total = 0;
 var repeat_render = false;
+var race_urls = {};
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (str) {
@@ -258,6 +259,7 @@ $(window).ready(function(){
 
 
     $("#splash").dialog({
+        autoOpen: false, // TEMP
         modal: true, title: 'Which loads faster?',
         open: function (event, ui) {
             $('#matchups button')
@@ -278,7 +280,7 @@ $(window).ready(function(){
         },
         close: function() { }
     });
-    $('#splash-link').click(function(){$('#splash').dialog();});
+    $('#splash-link').click(function(){$('#splash').dialog('open');});
 
     $("#framebuster").dialog({
         autoOpen: false,
@@ -299,6 +301,32 @@ $(window).ready(function(){
 
     $('button').button();
     $('.load_time').hide();
+
+    // Load get parameters
+
+    // Race: populate left and right side urls
+    $.each({0:'l', 1:'r'}, function(i,side) {
+        var param = $.url.param(side);
+        if (param) {
+            var urls = param.split(';');
+            $.each(urls, function(j,url) {
+                $('#'+side+j).val(url);
+            });
+            $('#url'+i).val(urls[0]);
+            race_urls[side] = urls;
+        }
+    });
+
+    // Repeat count
+    var times = $.url.param('times');
+    if (times) {
+        if ($('#' + times + 'times').attr('checked') === undefined) {
+            $('#custom_times').val(times);
+            $('#custom').attr('checked', true);
+        } else {
+            $('#' + times + 'times').attr('checked', true);
+        }
+    }
 
     // Shortcuts
     make_shortcut = function(key,link) {
@@ -343,6 +371,26 @@ $(window).ready(function(){
 
     // Blur inputs on escape
     $('input').bind('keydown', 'esc', function(){$(this).blur()});
+
+    // Action triggers
+    switch ($.url.param('action')) {
+        case 'go': $('#go').trigger('click'); break;
+        case 'race': $('#race').trigger('click'); break;
+        case 'repeat': 
+            $('#repeat').trigger('click'); 
+            break;
+        case 'splash': $('#splash').dialog('open'); break;
+        case undefined: 
+            // Auto-start if they provided URLs
+            if (race_urls['l'] && race_urls['r']) {
+                $('#go').trigger('click'); 
+            } 
+            // Otherwise show the splash screen
+            else {
+                $('#splash').dialog('open'); 
+            }
+            break;
+    };
 });
 
 

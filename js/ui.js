@@ -252,7 +252,7 @@ $(window).ready(function(){
             open: function (event, ui) {
                 $('#data-form textarea').val(display_runs());
             },
-            buttons: { 'OK': function() {$(this).dialog('close')}, },
+            buttons: { 'OK': function() {$(this).dialog('close')} },
             close: function() {}
         });
     });
@@ -295,7 +295,7 @@ $(window).ready(function(){
             else return;
             $('#framebuster_name').html('(<b>'+url+'</b>)');
         },
-        buttons: { 'OK': function() {$(this).dialog('close')}, },
+        buttons: { 'OK': function() {$(this).dialog('close')} },
         close: function() {}
     });
 

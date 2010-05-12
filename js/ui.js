@@ -259,7 +259,7 @@ $(window).ready(function(){
 
 
     $("#splash").dialog({
-        autoOpen: false, // TEMP
+        autoOpen: false,
         modal: true, title: 'Which loads faster?',
         open: function (event, ui) {
             $('#matchups button')

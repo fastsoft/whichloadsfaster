@@ -1,3 +1,4 @@
+var our_url = $.url.attr('source');
 var start = [new Date(), new Date()];
 var duration = [null, null];
 var urls = ['', ''];
@@ -6,6 +7,10 @@ var repeat = 0;
 var repeat_total = 0;
 var repeat_render = false;
 var race_urls = {};
+var race_index = [0, 0];
+var racing = false;
+var querystring = '';
+var current_test_url = our_url;
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (str) {
@@ -14,6 +19,9 @@ if (!String.prototype.startsWith) {
 }
 
 load_frame = function(i, j) {
+
+    // Figure out what our next url is
+    if (racing) { $('#url'+i).val(race_urls[['l','r'][i]][race_index[i]]); }
 
     // Add http method if it is not there
     var url = $('#url'+i).val();
@@ -29,8 +37,10 @@ load_frame = function(i, j) {
     $('#frame'+i).attr('src', 'about:blank');	
 
     // Starting timestamp
-    start[i] = new Date();
-    duration[i] = 0; 
+    if (!racing || race_index[i] === 0) {
+        start[i] = new Date();
+        duration[i] = 0; 
+    }
 
     // Set frame address to whatever's in the input box
     $('#frame' + i).attr('src', url);
@@ -88,7 +98,14 @@ comparison_txt = function(benefit) {
 after_load = function(i, j) {
 
     // Fix iframe bug on firefox that triggers run on load
-    if (duration[i] == null) return;
+    if (duration[i] === null) return;
+
+    // If we're racing and not on the last run trigger the next load and bail
+    if (racing && race_index[i] < race_urls[['l','r'][i]].length - 1) {
+        race_index[i]++;
+        load_frame(i, j);
+        return;
+    }
 
     // Grab the ending timestamp
     var end = new Date();
@@ -104,7 +121,7 @@ after_load = function(i, j) {
         var benefit = duration[0] / duration[1];
 
         // Record result
-        var pair = escape(urls[0]) + ':' + escape(urls[1]);
+        var pair = build_querystring(racing);
         if (!runs[pair])
             runs[pair] = {
                 total_time: [0, 0],
@@ -158,9 +175,17 @@ after_load = function(i, j) {
             }
         }
 
+        // Finish race
+        if (racing && !repeat) {
+            racing = false;
+        }
+
         // Take care of repeats
         if (repeat) {
             if (--repeat == 0) repeat_render = true;
+            if (racing) {
+                prep_race();
+            }
             reload_frames();
         }
         
@@ -181,6 +206,58 @@ go_focus = function () {
         $('#go').focus();
     }, 10);
 };
+
+prep_repeat = function(times) {
+    repeat = times - 1;
+    repeat_total = times;
+    repeat_render = false;
+};
+
+prep_race = function() {
+    racing = true;
+    race_index = [0, 0];
+}
+
+// Build a query string from an array of urls or a single url
+build_querystring = function (racing) {
+    var l_escaped = [], r_escaped = [];
+    if (racing) {
+        for (var i=0; i<race_urls.l.length; i++) {
+            l_escaped[i] = escape(race_urls.l[i]);
+        }
+        for (var i=0; i<race_urls.r.length; i++) {
+            r_escaped[i] = escape(race_urls.r[i]);
+        }
+    }
+    else {
+        l_escaped = [escape(urls[0])]; 
+        r_escaped = [escape(urls[1])];
+    }
+    return 'l='+l_escaped.join(';') + '&r='+r_escaped.join(';');
+}
+
+// Parse any querystring and fill our variables
+parse_querystring = function(qs) {
+    
+    // Grab our current querystring if we don't have an arg
+    if (!qs) { qs = $.url.attr('query'); if(!qs) return; }
+
+    // $.url.setUrl needs the question mark
+    if (qs[0] != '?') { qs = '?'+qs; };
+
+    // Parse it
+    $.each({0:'l', 1:'r'}, function(i,side) {
+        var param = $.url.setUrl(qs).param(side);
+        if (param) {
+            var urls = param.split(';');
+            $.each(urls, function(j,url) {
+                $('#'+side+j).val(url);
+            });
+            $('#url'+i).val(urls[0]);
+            race_urls[side] = urls;
+        }
+    });
+}
 
 
 $(window).ready(function (){
@@ -221,9 +298,7 @@ $(window).ready(function (){
                 }
                 else {
                     $(this).dialog('close');
-                    repeat = value - 1;
-                    repeat_total = value;
-                    repeat_render = false;
+                    prep_repeat(value);
                     reload_frames();
                 }
             },
@@ -235,10 +310,29 @@ $(window).ready(function (){
 
     $('#race').click(function () {
         $("#race-form").dialog({
-            width: 400, height: 250,
+            width: 550,
             modal: true, title: 'Race!',
             buttons: {
-                'OK': function () { $(this).dialog('close'); }
+                'OK': function() { 
+
+                    // Build a query argument for each side
+                    var query = {r:'', l:''};
+                    $.each(query, function(k,v) {
+                        var i = 0; var u = 'foo'; var run = [];
+                        while (u = $('#'+k+i).val()) { run.push(u); i++; }
+                        query[k] = k + '=' + run.join(';');
+                    });
+
+                    // Then parse it as if it were our querystring
+                    var qs = query.l + '&' + query.r;
+                    querystring = qs;
+                    parse_querystring(qs);
+
+                    // And start the race
+                    prep_race();
+                    reload_frames();
+                    $(this).dialog('close'); 
+                }
             },
             close: function () { }
         });
@@ -298,23 +392,25 @@ $(window).ready(function (){
         close: function () {}
     });
 
+    $("#help").dialog({
+        autoOpen: false, modal: true, title: 'Help',
+        buttons: { 'OK': function() {$(this).dialog('close')} }
+    });
+    $('#help-link').click(function(){$('#help').dialog('open');});
+
+    $("#about").dialog({
+        width: 400, height: 400,
+        autoOpen: false, modal: true, title: 'About',
+        buttons: { 'OK': function() {$(this).dialog('close')} }
+    });
+    $('#about-link').click(function(){$('#about').dialog('open');});
+
     $('button').button();
     $('.load_time').hide();
 
     // Load get parameters
 
-    // Race: populate left and right side urls
-    $.each({0:'l', 1:'r'}, function(i,side) {
-        var param = $.url.param(side);
-        if (param) {
-            var urls = param.split(';');
-            $.each(urls, function(j,url) {
-                $('#'+side+j).val(url);
-            });
-            $('#url'+i).val(urls[0]);
-            race_urls[side] = urls;
-        }
-    });
+    parse_querystring();
 
     // Repeat count
     var times = $.url.param('times');
@@ -375,14 +471,18 @@ $(window).ready(function (){
     switch ($.url.param('action')) {
         case 'go': $('#go').trigger('click'); break;
         case 'race': $('#race').trigger('click'); break;
-        case 'repeat': 
-            $('#repeat').trigger('click'); 
-            break;
+        case 'repeat': $('#repeat').trigger('click'); break;
         case 'splash': $('#splash').dialog('open'); break;
         case undefined: 
             // Auto-start if they provided URLs
             if (race_urls['l'] && race_urls['r']) {
-                $('#go').trigger('click'); 
+                if (times) {
+                    prep_repeat(times);
+                }
+                if (race_urls['l'].length + race_urls['r'].length > 2) {
+                    prep_race();
+                }
+                reload_frames();
             } 
             // Otherwise show the splash screen
             else {

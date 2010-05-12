@@ -23,6 +23,9 @@ load_frame = function (i, j) {
     // Figure out what our next url is
     if (racing) { $('#url'+i).val(race_urls[['l','r'][i]][race_index[i]]); }
 
+    // Figure out what our next url is
+    if (racing) { $('#url'+i).val(race_urls[['l','r'][i]][race_index[i]]); }
+
     // Add http method if it is not there
     var url = $('#url'+i).val();
     if (url.indexOf('://') == -1) {
@@ -350,6 +353,7 @@ $(window).ready(function (){
             },
             buttons: {
                 'OK': function () { 
+
                     // Build a query argument for each side
                     var query = {r:'', l:''};
                     $.each(query, function (k,v) {

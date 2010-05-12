@@ -75,11 +75,10 @@ comparison_txt = function(benefit) {
 
     if (b === '1.0') {
         return 'it\'s a tie!';
-    /*} else if (b < 2)  {
+    } else if (b < 2)  {
         b = (100 * (b-1)).toFixed(0);
-        if (benefit > 1.0) return b + '% faster &rarr;';
-        else return '&larr; ' + b + '% faster';
-    */
+        if (benefit > 1.0) return b + '<small>%</small> faster &rarr;';
+        else return '&larr; ' + b + '<small>%</small> faster';
     } else {
         if (benefit > 1.0) return b + ' &times; faster &rarr;';
         else return '&larr; ' + b + ' &times; faster';

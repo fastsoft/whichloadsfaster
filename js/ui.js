@@ -80,17 +80,21 @@ display_runs = function () {
 
 comparison_txt = function (benefit) {
 
-    if (benefit < 1.0) var b = (1/benefit).toPrecision(2);
-    else var b = benefit.toPrecision(2);
+    var left_greater = true;
+    if (benefit < 1.0) {
+        benefit = (1.0/benefit);
+        left_greater = false;
+    }
+    var percent = Math.round(100.0 * (benefit-1));
+    var b = benefit.toPrecision(2);
 
-    if (b === '1.0') {
+    if (percent < 5) {
         return 'it\'s a tie!';
-    } else if (b < 2)  {
-        b = (100 * (b-1)).toFixed(0);
-        if (benefit > 1.0) return b + '<small>%</small> faster &rarr;';
-        else return '&larr; ' + b + '<small>%</small> faster';
+    } else if (benefit < 2)  {
+        if (left_greater) return percent + '<small>%</small> faster &rarr;';
+        else return '&larr; ' + percent + '<small>%</small> faster';
     } else {
-        if (benefit > 1.0) return b + ' &times; faster &rarr;';
+        if (left_greater) return b + ' &times; faster &rarr;';
         else return '&larr; ' + b + ' &times; faster';
     }
 }

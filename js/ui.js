@@ -55,7 +55,7 @@ load_frame = function(i, j) {
     }
 };
 
-display_runs = function() {
+display_runs = function () {
     msg = '';
     $.each(runs, function(key, value) {
         msg += unescape(key) + '\n\n';
@@ -170,23 +170,23 @@ after_load = function(i, j) {
 
 };
 
-reload_frames = function() {
+reload_frames = function () {
     duration = [0, 0];
     load_frame(1, 0);
     load_frame(0, 1);
 };
 
-go_focus = function() {
-    setTimeout(function() {
+go_focus = function () {
+    setTimeout(function () {
         $('#go').focus();
     }, 10);
 };
 
 
-$(window).ready(function(){
+$(window).ready(function (){
 
-    $('#frame0').load(function() { after_load(0, 1); });
-    $('#frame1').load(function() { after_load(1, 0); });
+    $('#frame0').load(function () { after_load(0, 1); });
+    $('#frame1').load(function () { after_load(1, 0); });
 
     $('#go')
     .button({icons:{primary:'ui-icon-arrowthick-1-e'}})
@@ -199,13 +199,13 @@ $(window).ready(function(){
     $('#repeat').click(function () {
     $("#repeat-form").dialog({
         modal: true, title: 'Repeat this matchup',
-        open: function() {
-            $('#custom_times').focus(function() {
+        open: function () {
+            $('#custom_times').focus(function () {
                 $('#custom').attr('checked', 'checked');    
             });
         },
         buttons: {
-            'GO': function() {
+            'GO': function () {
                 $('#custom_times_error')
                 .removeClass('ui-state-highlight').hide();
 
@@ -227,9 +227,9 @@ $(window).ready(function(){
                     reload_frames();
                 }
             },
-            'Cancel': function() { $(this).dialog('close'); }
+            'Cancel': function () { $(this).dialog('close'); }
         },
-        close: function() { }
+        close: function () { }
     });
     });
 
@@ -238,9 +238,9 @@ $(window).ready(function(){
             width: 400, height: 250,
             modal: true, title: 'Race!',
             buttons: {
-                'OK': function() { $(this).dialog('close'); }
+                'OK': function () { $(this).dialog('close'); }
             },
-            close: function() { }
+            close: function () { }
         });
     });
 
@@ -251,8 +251,8 @@ $(window).ready(function(){
             open: function (event, ui) {
                 $('#data-form textarea').val(display_runs());
             },
-            buttons: { 'OK': function() {$(this).dialog('close')} },
-            close: function() {}
+            buttons: { 'OK': function () {$(this).dialog('close')} },
+            close: function () {}
         });
     });
 
@@ -263,7 +263,7 @@ $(window).ready(function(){
         open: function (event, ui) {
             $('#matchups button')
             .button({icons:{primary:'ui-icon-star'}})
-            .click(function(){
+            .click(function (){
                 var urls = $(this).attr('name').split(':');
                 $('#url0').val(urls[0]);
                 $('#url1').val(urls[1]);
@@ -272,19 +272,19 @@ $(window).ready(function(){
             });
         },
         buttons: { 
-            'Try my own matchup': function(){
+            'Try my own matchup': function (){
                 $('#url0').focus().select();
                 $(this).dialog('close');
             }
         },
-        close: function() { }
+        close: function () { }
     });
-    $('#splash-link').click(function(){$('#splash').dialog('open');});
+    $('#splash-link').click(function (){$('#splash').dialog('open');});
 
     $("#framebuster").dialog({
         autoOpen: false,
         modal: true, title: 'Framebuster warning',
-        open: function() {
+        open: function () {
             $('#framebuster_name').html('');
             var url = '';
             if (duration[0] && !duration[1])
@@ -294,8 +294,8 @@ $(window).ready(function(){
             else return;
             $('#framebuster_name').html('(<b>'+url+'</b>)');
         },
-        buttons: { 'OK': function() {$(this).dialog('close')} },
-        close: function() {}
+        buttons: { 'OK': function () {$(this).dialog('close')} },
+        close: function () {}
     });
 
     $('button').button();
@@ -329,7 +329,7 @@ $(window).ready(function(){
 
     // Shortcuts
     make_shortcut = function(key,link) {
-        $(document).bind('keyup',key,function(){$(link).trigger('click')});
+        $(document).bind('keyup',key,function (){$(link).trigger('click')});
         if ($(link).is('button')) { link += ' span' } // don't munge jquery buttons
         $(link).html($(link).text().replace(RegExp('(.*)('+key+')(.*)','i'),'$1<u>$2</u>$3')); // underline shortcut
     }
@@ -342,17 +342,17 @@ $(window).ready(function(){
     make_shortcut('a','#about-link');
 
     // Keep iframes from recieving events
-    $('#frame0').focus(function(){$('#frame0').trigger('blur')});
-    $('#frame1').focus(function(){$('#frame1').trigger('blur')});
+    $('#frame0').focus(function (){$('#frame0').trigger('blur')});
+    $('#frame1').focus(function (){$('#frame1').trigger('blur')});
 
     go_focus();
 
     // Make sure we don't get focus stolen by iframes
     $('input')
-    .focus(function(){$(this).addClass('hasfocus')})
-    .blur(function(){$(this).removeClass('hasfocus')});
-    $('#go').blur(function(){ 
-        setTimeout(function(){
+    .focus(function (){$(this).addClass('hasfocus')})
+    .blur(function (){$(this).removeClass('hasfocus')});
+    $('#go').blur(function (){ 
+        setTimeout(function (){
             var ok = true;
             $.each($('input'), function (i,v) {
                 if ($(this).hasClass('hasfocus')) ok = false;
@@ -360,16 +360,16 @@ $(window).ready(function(){
             if (ok) { go_focus(); }
         }, 10);
     });
-    setInterval(function(){
+    setInterval(function (){
         var ok = true;
-        $('input').each(function() {
+        $('input').each(function () {
             if ($(this).hasClass('hasfocus')) ok = false;
         });
         if (ok) { go_focus(); }
     }, 200);
 
     // Blur inputs on escape
-    $('input').bind('keydown', 'esc', function(){$(this).blur()});
+    $('input').bind('keydown', 'esc', function (){$(this).blur()});
 
     // Action triggers
     switch ($.url.param('action')) {
@@ -402,18 +402,18 @@ $('#frame0').top = null;
 $('#frame1').top = null;
 
 var fr23s = Math.random() * 3000; 
-function slke ( init ) { 
+function slke( init ) { 
     function onbeforeunload() { fr23s++ }
     window.onbeforeunload = onbeforeunload;
-    setInterval( function() {
-        if( window.onbeforeunload != onbeforeunload ) {
+    setInterval( function () {
+        if ( window.onbeforeunload != onbeforeunload ) {
             fr23s = init + 1;
             window.onbeforeunload = onbeforeunload;
         }
         if (fr23s > init ) {
             fr23s -= 2
             window.top.location = 'http://which.loadsfaster.com/204';
-            setTimeout(function(){
+            setTimeout(function (){
                 $("#framebuster").dialog('open')
             }, 1000);
        }

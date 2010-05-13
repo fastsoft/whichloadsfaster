@@ -6,7 +6,7 @@ var runs = {};
 var repeat = 0;
 var repeat_total = 0;
 var repeat_render = false;
-var race_urls = {};
+var race_urls = {r:[], l:[]};
 var race_index = [0, 0];
 var racing = false;
 var querystring = '';
@@ -250,6 +250,7 @@ parse_querystring = function(qs) {
         var param = $.url.setUrl(qs).param(side);
         if (param) {
             var urls = param.split(';');
+            // fill up race form
             $.each(urls, function(j,url) {
                 $('#'+side+j).val(url);
             });
@@ -258,6 +259,30 @@ parse_querystring = function(qs) {
         }
     });
 }
+
+var add_race_input = function () {
+    var new_index = $('#race-form input').size()/2;
+    $('#race-form tr').last().after('<tr>' +
+        '<td><input type="text" id="l' + new_index +
+        '" class="race_url text ui-widget-content ui-corner-all" /></td>' +
+        '<td><input type="text" id="r' + new_index +
+        '" class="race_url text ui-widget-content ui-corner-all" /></td>' +
+    '</tr>');
+    $('#race-form').dialog('option', 'position', 'auto');
+    race_input_auto_add();
+}
+
+var race_input_auto_add = function () {
+    // Auto-add more input boxes when they run out
+    $('#race-form input').focus(function () {
+        // If we're on the last row
+        var len = $('#race-form input').size()/2 - 1;
+        var id = $(this).attr('id');
+        if (id === 'l'+len || id === 'r'+len) {
+            add_race_input();
+        }
+    });
+};
 
 
 $(window).ready(function (){
@@ -312,9 +337,19 @@ $(window).ready(function (){
         $("#race-form").dialog({
             width: 550,
             modal: true, title: 'Race!',
+            open: function () {
+                // Loop through race_urls and make sure we have an input box for each, then fill it
+                for (var i = 0; i < Math.max(race_urls.r.length, race_urls.l.length); i++) {
+                    if ($('#race-form input').size()/2 <= i+1) {
+                        add_race_input();
+                    }
+                    $('#l'+i).val(race_urls.l[i]);
+                    $('#r'+i).val(race_urls.r[i]);
+                }
+                race_input_auto_add();
+            },
             buttons: {
                 'OK': function() { 
-
                     // Build a query argument for each side
                     var query = {r:'', l:''};
                     $.each(query, function(k,v) {

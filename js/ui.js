@@ -18,7 +18,7 @@ if (!String.prototype.startsWith) {
     }
 }
 
-load_frame = function(i, j) {
+load_frame = function (i, j) {
 
     // Figure out what our next url is
     if (racing) { $('#url'+i).val(race_urls[['l','r'][i]][race_index[i]]); }
@@ -67,10 +67,10 @@ load_frame = function(i, j) {
 
 display_runs = function () {
     msg = '';
-    $.each(runs, function(key, value) {
+    $.each(runs, function (key, value) {
         msg += unescape(key) + '\n\n';
         msg += 'right_ms,left_ms\n';
-        $.each(value.history, function(key, value) {
+        $.each(value.history, function (key, value) {
             msg += value[0] + ',' + value[1] + '\n';
         });
         msg += '\n\n';
@@ -78,7 +78,7 @@ display_runs = function () {
     return msg;
 };
 
-comparison_txt = function(benefit) {
+comparison_txt = function (benefit) {
 
     if (benefit < 1.0) var b = (1/benefit).toPrecision(2);
     else var b = benefit.toPrecision(2);
@@ -95,7 +95,7 @@ comparison_txt = function(benefit) {
     }
 }
 
-after_load = function(i, j) {
+after_load = function (i, j) {
 
     // Fix iframe bug on firefox that triggers run on load
     if (duration[i] === null) return;
@@ -207,13 +207,13 @@ go_focus = function () {
     }, 10);
 };
 
-prep_repeat = function(times) {
+prep_repeat = function (times) {
     repeat = times - 1;
     repeat_total = times;
     repeat_render = false;
 };
 
-prep_race = function() {
+prep_race = function () {
     racing = true;
     race_index = [0, 0];
 }
@@ -237,7 +237,7 @@ build_querystring = function (racing) {
 }
 
 // Parse any querystring and fill our variables
-parse_querystring = function(qs) {
+parse_querystring = function (qs) {
     
     // Grab our current querystring if we don't have an arg
     if (!qs) { qs = $.url.attr('query'); if(!qs) return; }
@@ -246,12 +246,12 @@ parse_querystring = function(qs) {
     if (qs[0] != '?') { qs = '?'+qs; };
 
     // Parse it
-    $.each({0:'l', 1:'r'}, function(i,side) {
+    $.each({0:'l', 1:'r'}, function (i,side) {
         var param = $.url.setUrl(qs).param(side);
         if (param) {
             var urls = param.split(';');
             // fill up race form
-            $.each(urls, function(j,url) {
+            $.each(urls, function (j,url) {
                 $('#'+side+j).val(url);
             });
             $('#url'+i).val(urls[0]);
@@ -349,10 +349,10 @@ $(window).ready(function (){
                 race_input_auto_add();
             },
             buttons: {
-                'OK': function() { 
+                'OK': function () { 
                     // Build a query argument for each side
                     var query = {r:'', l:''};
-                    $.each(query, function(k,v) {
+                    $.each(query, function (k,v) {
                         var i = 0; var u = 'foo'; var run = [];
                         while (u = $('#'+k+i).val()) { run.push(u); i++; }
                         query[k] = k + '=' + run.join(';');
@@ -429,16 +429,16 @@ $(window).ready(function (){
 
     $("#help").dialog({
         autoOpen: false, modal: true, title: 'Help',
-        buttons: { 'OK': function() {$(this).dialog('close')} }
+        buttons: { 'OK': function () {$(this).dialog('close')} }
     });
-    $('#help-link').click(function(){$('#help').dialog('open');});
+    $('#help-link').click(function (){$('#help').dialog('open');});
 
     $("#about").dialog({
         width: 400, height: 400,
         autoOpen: false, modal: true, title: 'About',
-        buttons: { 'OK': function() {$(this).dialog('close')} }
+        buttons: { 'OK': function () {$(this).dialog('close')} }
     });
-    $('#about-link').click(function(){$('#about').dialog('open');});
+    $('#about-link').click(function (){$('#about').dialog('open');});
 
     $('button').button();
     $('.load_time').hide();
@@ -459,7 +459,7 @@ $(window).ready(function (){
     }
 
     // Shortcuts
-    make_shortcut = function(key,link) {
+    make_shortcut = function (key,link) {
         $(document).bind('keyup',key,function (){$(link).trigger('click')});
         if ($(link).is('button')) { link += ' span' } // don't munge jquery buttons
         $(link).html($(link).text().replace(RegExp('(.*)('+key+')(.*)','i'),'$1<u>$2</u>$3')); // underline shortcut

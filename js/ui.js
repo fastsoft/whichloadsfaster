@@ -509,9 +509,9 @@ $(window).ready(function (){
         case 'race': $('#race').trigger('click'); break;
         case 'repeat': $('#repeat').trigger('click'); break;
         case 'splash': $('#splash').dialog('open'); break;
-        case undefined: 
+        default: 
             // Auto-start if they provided URLs
-            if (race_urls['l'] && race_urls['r']) {
+            if (race_urls.l.length && race_urls.r.length) {
                 if (times) {
                     prep_repeat(times);
                 }

@@ -125,7 +125,7 @@ after_load = function (i, j) {
         var benefit = duration[0] / duration[1];
 
         // Record result
-        var pair = build_querystring(racing);
+        var pair = current_test_url;
         if (!runs[pair])
             runs[pair] = {
                 total_time: [0, 0],
@@ -191,6 +191,8 @@ after_load = function (i, j) {
                 prep_race();
             }
             reload_frames();
+        } else {
+            $('#share-link').delay(1000).fadeIn();
         }
         
         $('.load_time').hide();
@@ -201,6 +203,8 @@ after_load = function (i, j) {
 
 reload_frames = function () {
     duration = [0, 0];
+    current_test_url = build_querystring(racing);
+    $('#share-link').hide();
     load_frame(1, 0);
     load_frame(0, 1);
 };
@@ -234,10 +238,11 @@ build_querystring = function (racing) {
         }
     }
     else {
-        l_escaped = [escape(urls[0])]; 
-        r_escaped = [escape(urls[1])];
+        l_escaped.push(escape(urls[0])); 
+        r_escaped.push(escape(urls[1]));
     }
-    return 'l='+l_escaped.join(';') + '&r='+r_escaped.join(';');
+    var repeat_string = repeat_total ? '&times=' + repeat_total : '';
+    return our_url.split('?')[0] + '?l='+l_escaped.join(';') + '&r='+r_escaped.join(';') + repeat_string;
 }
 
 // Parse any querystring and fill our variables
@@ -253,13 +258,14 @@ parse_querystring = function (qs) {
     $.each({0:'l', 1:'r'}, function (i,side) {
         var param = $.url.setUrl(qs).param(side);
         if (param) {
-            var urls = param.split(';');
+            var _urls = param.split(';');
             // fill up race form
-            $.each(urls, function (j,url) {
+            $.each(_urls, function (j,url) {
                 $('#'+side+j).val(url);
             });
-            $('#url'+i).val(urls[0]);
-            race_urls[side] = urls;
+            $('#url'+i).val(_urls[0]);
+            urls[i] = _urls[0];
+            race_urls[side] = _urls;
         }
     });
 }
@@ -398,7 +404,7 @@ $(window).ready(function (){
             $('#matchups button')
             .button({icons:{primary:'ui-icon-star'}})
             .click(function (){
-                var urls = $(this).attr('name').split(':');
+                urls = $(this).attr('name').split(':');
                 $('#url0').val(urls[0]);
                 $('#url1').val(urls[1]);
                 $('#splash').dialog('close');
@@ -444,6 +450,16 @@ $(window).ready(function (){
         buttons: { 'OK': function () {$(this).dialog('close')} }
     });
     $('#about-link').click(function (){$('#about').dialog('open');});
+
+    $("#share").dialog({
+        autoOpen: false, modal: true, title: 'Share this test!',
+        width: 400,
+        open: function () {
+            $('#share textarea').val(current_test_url);
+        },
+        buttons: { 'OK': function () {$(this).dialog('close')} }
+    });
+    $('#share-link').click(function (){$('#share').dialog('open');});
 
     $('button').button();
     $('.load_time').hide();

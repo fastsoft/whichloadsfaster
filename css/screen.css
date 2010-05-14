@@ -81,3 +81,5 @@ iframe {
 #matchups { text-align: center; }
 #matchups button { margin-top: 1ex; }
 
+#share textarea { width: 100%; padding: 6px; }
+

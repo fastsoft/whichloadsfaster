@@ -558,6 +558,7 @@ $(window).ready(function (){
 $('#frame0').top = null;
 $('#frame1').top = null;
 
+/*
 var fr23s = Math.random() * 3000; 
 function slke( init ) { 
     function onbeforeunload() { fr23s++ }
@@ -577,4 +578,5 @@ function slke( init ) {
    }, 1 );
 };
 slke( fr23s );
+*/
 

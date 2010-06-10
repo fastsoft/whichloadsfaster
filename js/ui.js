@@ -11,6 +11,7 @@ var race_index = [0, 0];
 var racing = false;
 var querystring = '';
 var current_test_url = our_url;
+var serial = false;
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (str) {
@@ -199,14 +200,24 @@ after_load = function (i, j) {
         go_focus();
     }
 
+    // For serial mode, trigger other side if we're all done
+    if (serial && duration[i] && !duration[j]) {
+        load_frame(j, i);
+    }
+
+
 };
 
 reload_frames = function () {
     duration = [0, 0];
     current_test_url = build_querystring(racing);
     $('#share-link').hide();
-    load_frame(1, 0);
-    load_frame(0, 1);
+    if (serial) {
+        load_frame(1, 0);
+    } else {
+        load_frame(1, 0);
+        load_frame(0, 1);
+    }
 };
 
 go_focus = function () {
@@ -461,6 +472,27 @@ $(window).ready(function (){
     });
     $('#share-link').click(function (){$('#share').dialog('open');});
 
+    $("#settings").dialog({
+        autoOpen: false, modal: true, title: 'Settings',
+        width: 400,
+        open: function () {
+            if (typeof(themes_loaded) === 'undefined') {
+                $('#switcher').themeswitcher();
+                themes_loaded = true;
+            }
+        },
+        buttons: { 'OK': function () {$(this).dialog('close')} }
+    });
+    $('#settings-link').click(function (){$('#settings').dialog('open');});
+
+    $('head').append('<link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />');
+    $('head').append('<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>');
+
+    $('#serial_parallel').buttonset();
+    $('#serial, #parallel').change(function(){
+        serial = $('#serial').attr('checked');
+    });
+
     $('button').button();
     $('.load_time').hide();
 
@@ -487,7 +519,8 @@ $(window).ready(function (){
     }
     make_shortcut('r','#repeat');
     make_shortcut('c','#race');
-    make_shortcut('s','#splash-link');
+    make_shortcut('a','#splash-link');
+    make_shortcut('s','#settings-link');
     make_shortcut('d','#data');
     make_shortcut('g','#go');
     make_shortcut('h','#help-link');

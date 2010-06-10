@@ -26,6 +26,7 @@
         <a id="race" href="#">Race</a>
         <a id="data" href="#">Grab my data</a>
         <a id="splash-link" href="#">Splash screen</a>
+        <a id="settings-link" href="#">Settings</a>
         <div id="timeout"></div>
     </div>
 
@@ -169,6 +170,28 @@
     <p>
         <textarea class="text ui-widget-content ui-corner-all"></textarea>
     </p>
+</div>
+
+<div id="settings" style="display: none;">
+
+    <dl>
+        <dt>Page Loading Mode</dt>
+        <dd>
+            <div id="serial_parallel">
+            <input id="parallel" value="parallel" name="serial" type="radio" checked="checked" /> <label for="parallel">Parallel (default)</label>
+            <input id="serial" value="serial" name="serial" type="radio" /> <label for="serial">Serial</label>
+            </div>
+        </dt>
+            <p>Select serial mode to load one side at a time to eliminate the possibility that the two sides will interfere with each other.</p>
+        </dd>
+
+        <dt>Change Theme</dt>
+        <dd>
+            Provided by the awesome folks at <a href="http://jqueryui.com">jQuery UI</a>.
+            <div id="switcher"></div>
+        </dd>
+
+    </dl>
 </div>
 
 </body>

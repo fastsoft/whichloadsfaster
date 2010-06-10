@@ -5,6 +5,8 @@ body {
     padding: 0;
 }
 
+dt { font-weight: bold; padding: 1em; }
+
 #header { width: 100%; padding: 1ex;}
 
 #features { text-align:center; }

@@ -75,8 +75,6 @@ iframe {
     width: 90%; height: 440px;
     margin: 0 2em; 
     padding: 1em;
-    border: solid 1px black;
-    background: #eeeeee;
     overflow: auto;
 }
 

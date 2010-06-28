@@ -1,4 +1,5 @@
 var our_url = $.url.attr('source');
+var our_host = $.url.attr('host') || 'localhost';
 var start = [new Date(), new Date()];
 var duration = [null, null];
 var urls = ['', ''];
@@ -562,6 +563,12 @@ $(window).ready(function (){
         case 'race': $('#race').trigger('click'); break;
         case 'repeat': $('#repeat').trigger('click'); break;
         case 'splash': $('#splash').dialog('open'); break;
+        case 'serial': 
+            serial = true; 
+            $('#parallel').removeAttr('checked');
+            $('#serial').attr('checked', 'checked');
+            $('#serial_parallel').buttonset();
+            break;
         default: 
             // Auto-start if they provided URLs
             if (race_urls.l.length && race_urls.r.length) {
@@ -579,6 +586,10 @@ $(window).ready(function (){
             }
             break;
     };
+
+    // Setup logo link (always points to currently running copy)
+    $('#logo a').attr('href', our_url);
+    $('#logo a').html(our_host);
 });
 
 

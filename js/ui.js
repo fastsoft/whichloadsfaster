@@ -459,6 +459,9 @@ $(window).ready(function (){
     $("#about").dialog({
         width: 400,
         autoOpen: false, modal: true, title: 'About this project',
+        open: function () {
+            $('.IE6 #about').supersleight({shim:'img/x.gif'});
+        },
         buttons: { 'Cool Beans!': function () {$(this).dialog('close')} }
     });
     $('#about-link').click(function (){$('#about').dialog('open');});
@@ -590,6 +593,10 @@ $(window).ready(function (){
     // Setup logo link (always points to currently running copy)
     $('#logo a').attr('href', our_url);
     $('#logo a').html(our_host);
+
+    // Make transparent pngs in IE6
+    $('.IE6 #xfactor').supersleight({shim:'img/x.gif'});
+    $('.IE6 #average').supersleight({shim:'img/x.gif'});
 });
 
 

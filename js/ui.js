@@ -35,7 +35,7 @@ load_frame = function (i, j) {
     }
 
     // Clear current frame
-    $('#frame'+i).attr('src', 'about:blank');	
+    $('#frame'+i).contents().find('iframe').attr('src', 'about:blank');	
 
     // Starting timestamp
     if (!racing || race_index[i] === 0) {
@@ -44,10 +44,10 @@ load_frame = function (i, j) {
     }
 
     // Set frame address to whatever's in the input box
-    $('#frame' + i).attr('src', url);
+    $('#frame'+i).contents().find('iframe').attr('src', url);
 
     // Update loading message
-    $('#time' + i).html('<blink>loading...</blink>').show();
+    $('#time'+i).html('<blink>loading...</blink>').show();
 
     // Clear overlays box
     if (repeat_total) {
@@ -308,8 +308,8 @@ var race_input_auto_add = function () {
 
 $(window).ready(function (){
 
-    $('#frame0').load(function () { after_load(0, 1); });
-    $('#frame1').load(function () { after_load(1, 0); });
+    $('#frame0').contents().find('#frame0').load(function () { after_load(0, 1); });
+    $('#frame1').contents().find('#frame1').load(function () { after_load(1, 0); });
 
     $('#go')
     .button({icons:{primary:'ui-icon-arrowthick-1-e'}})

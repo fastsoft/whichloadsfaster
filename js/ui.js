@@ -457,9 +457,9 @@ $(window).ready(function (){
     $('#help-link').click(function (){$('#help').dialog('open');});
 
     $("#about").dialog({
-        width: 400, height: 400,
+        width: 400,
         autoOpen: false, modal: true, title: 'About',
-        buttons: { 'OK': function () {$(this).dialog('close')} }
+        buttons: { 'Cool Beans!': function () {$(this).dialog('close')} }
     });
     $('#about-link').click(function (){$('#about').dialog('open');});
 
@@ -520,7 +520,7 @@ $(window).ready(function (){
     }
     make_shortcut('r','#repeat');
     make_shortcut('c','#race');
-    make_shortcut('a','#splash-link');
+    make_shortcut('p','#splash-link');
     make_shortcut('s','#settings-link');
     make_shortcut('d','#data');
     make_shortcut('g','#go');

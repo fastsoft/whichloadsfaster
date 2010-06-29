@@ -485,8 +485,12 @@ $(window).ready(function (){
     });
     $('#settings-link').click(function (){$('#settings').dialog('open');});
 
-    $('head').append('<link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />');
-    $('head').append('<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>');
+    //$('head').append('<link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />');
+
+    if (typeof(themes_loaded) === 'undefined') {
+        $('#switcher').themeswitcher();
+        themes_loaded = true;
+    }
 
     $('#serial_parallel').buttonset();
     $('#serial, #parallel').change(function(){

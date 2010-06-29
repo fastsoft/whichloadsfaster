@@ -458,7 +458,7 @@ $(window).ready(function (){
 
     $("#about").dialog({
         width: 400,
-        autoOpen: false, modal: true, title: 'About',
+        autoOpen: false, modal: true, title: 'About this project',
         buttons: { 'Cool Beans!': function () {$(this).dialog('close')} }
     });
     $('#about-link').click(function (){$('#about').dialog('open');});

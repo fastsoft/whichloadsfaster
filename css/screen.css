@@ -12,6 +12,7 @@ dt { font-weight: bold; padding: 1em; }
 #logo { font-weight: bold; display: inline; padding-right: 1ex}
 #features { text-align:center; }
 #features a { padding-left: 1ex; text-decoration:none; }
+#features-divider { display:inline; padding-left: 2em; font-weight:bold; }
 #gobar { position: relative; display: block; width: 100%; height: 40px;  }
 #gobar div { width: 50%; position: absolute; top: 0;}
 #url0, #url1 { height: 30px; width: 70%; margin: 10px; padding: 6px; }

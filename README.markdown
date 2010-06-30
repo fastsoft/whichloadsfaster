@@ -22,12 +22,23 @@ Were done in OmniGraffle.
 
 So, I'm not made of money for spare bandwidth and you probably aren't either, 
 so let's make everything with a far-future expires header and auto-version all
-our static content. To make this as painless as possible, I'm requiring `make`
-and python.
+our static content. We'll do this by appending the SHA1 hash of each file's
+contents to its filename so that whenever it changes, the user will be directed
+to get the new resource.
 
-There's an example configuration for apache in `static/.htaccess` for far-future
-expires.
+There's an example configuration for apache in `static/.htaccess` that does the
+far-future expires.
 
-There will also be a Makefile to build the static pages 
-(when I get around to it).
+There is a Makefile to build and static-ify the site. It requires:
+
+ - openssl (for generating file hashes)
+ - google's closure compiler (for compiling and minifying javascript)
+ - markdown (for generating documentation)
+
+## Contact ##
+
+There's a mailing list at <whichloadsfaster@googlegroups.com>, which I expect
+could end up being more user-oriented. I'll create a dev list if necessary.
+
+You can reach me at <onecreativenerd@gmail.com>.
 

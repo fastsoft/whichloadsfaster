@@ -1,0 +1,44 @@
+
+# Framebuster nop redirect
+Redirect 204 /204
+
+# Rules below adapted from Sergey Chernyshev's post:
+# http://www.sergeychernyshev.com/blog/speed-up-your-site-drop-in-htaccess-file/
+
+<IfModule mod_deflate.c>
+# Insert filter
+SetOutputFilter DEFLATE
+
+# Netscape 4.x has some problems...
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+# Netscape 4.06-4.08 have some more problems
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+# NOTE: Due to a bug in mod_setenvif up to Apache 2.0.48
+# the above regex won't work. You can use the following
+# workaround to get the desired effect:
+BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+# Don't compress images
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|ico)$ no-gzip
+</IfModule> 
+
+# Don't do filename rewriting because we'll just rewrite our
+# html to use the name with the hash. More compatible. --ryan
+#<IfModule mod_rewrite.c>
+#RewriteEngine on
+#RewriteRule ^(.*)\.(\d+)(_m_\d+)?\.([^\.]+)$    $1.$4    [L,QSA]
+#</IfModule> 
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/gif "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/x-javascript "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType text/javascript "access plus 1 year"
+</IfModule>

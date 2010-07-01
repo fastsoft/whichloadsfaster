@@ -33,12 +33,15 @@ There is a Makefile to build and static-ify the site. It requires:
 
  - openssl (for generating file hashes)
  - google's closure compiler (for compiling and minifying javascript)
+ - yui compressor (for minifying css)
+ - htmltidy (for minifying html)
  - markdown (for generating documentation)
 
 ## Contact ##
 
-There's a mailing list at <whichloadsfaster@googlegroups.com>, which I expect
-could end up being more user-oriented. I'll create a dev list if necessary.
+There's a [mailing list](http://groups.google.com/group/whichloadsfaster), 
+which I expect could end up being more user-oriented. I'll create a dev list
+if necessary.
 
 You can reach me at <onecreativenerd@gmail.com>.
 

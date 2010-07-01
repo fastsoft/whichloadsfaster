@@ -1,7 +1,10 @@
-.SUFFIXES: .min.js .js .min.css .css .png .static.png
-.PHONY: all clean docs
+.SUFFIXES: .min.js .js .min.css .css .png .static.png .tidy.html .html
+.PHONY: all clean docs html css js
 
-CLOSURE_CMD = closure # Replace this with how you invoke closure
+# Replace these with your own method of invoking the various tools
+CLOSURE_CMD = closure
+YUICOMPRESSOR = yuicompressor
+TIDY = tidy 
 
 STATIC = static
 BUILD = whichloadsfaster
@@ -10,7 +13,17 @@ BUILD = whichloadsfaster
 SCRIPTS := `sed -n -e 's/.*src="\(.*.js\)".*/$(STATIC)\/\1/p' < $(STATIC)/index.html`
 TARGET_PNGS := `sed -n -e 's/.*src="\(.*.png\)".*/$(BUILD)\/\1/p' < $(STATIC)/index.html`
 
-all: docs $(BUILD) $(BUILD)/js/all.min.js $(BUILD)/css/screen.min.css
+all: docs $(BUILD) html css js
+
+html: $(BUILD)/index.html $(BUILD)/index.tidy.html
+
+js: $(BUILD)/js/all.min.js
+
+css: $(BUILD)/css/screen.min.css $(BUILD)/css/sunny/jquery-ui-1.8.custom.min.css
+
+$(BUILD)/css/screen.min.css: $(STATIC)/index.html
+$(BUILD)/css/sunny/jquery-ui-1.8.custom.min.css: $(STATIC)/index.html
+
 clean: docs.clean
 	rm -rf $(BUILD)
 
@@ -22,7 +35,10 @@ $(BUILD):
 	cp -r $(STATIC)/ $(BUILD)/
 
 README.html: README.markdown
-	markdown $? -f $@
+	markdown $? > $@
+
+$(BUILD)/index.html: $(STATIC)/index.html
+	cp $< $@
 
 dist:
 	# Creating distribution archive
@@ -50,24 +66,34 @@ $(BUILD)/js/all.js: $(STATIC)/index.html $(STATIC)/js/*.js
 .js.min.js:
 	# Compile the js 
 	$(CLOSURE_CMD) --js $< --js_output_file $@
-	# Take the SHA1 and put it into the filename, then modify main document
+	# Rename using SHA1
 	SHA1=`openssl sha1 $< | cut -d' ' -f2`;\
     cp $@ $*.$${SHA1}.min.js; \
 	cat $(BUILD)/index.html | sed s/$(<F)/$(*F).$${SHA1}.min.js/g > $(BUILD)/index.tmp.html
 	mv $(BUILD)/index.tmp.html $(BUILD)/index.html
 
 .css.min.css:
-	# TODO: Compile and minify CSS
-	cp $< $@
-	# Take the SHA1 and put it into the filename, then modify main document
+	# Minify CSS
+	$(YUICOMPRESSOR) $< -o $@
+	# Rename using SHA1
 	SHA1=`openssl sha1 $< | cut -d' ' -f2`;\
     cp $@ $*.$${SHA1}.min.css; \
 	cat $(BUILD)/index.html | sed s/$(<F)/$(*F).$${SHA1}.min.css/g > $(BUILD)/index.tmp.html
 	mv $(BUILD)/index.tmp.html $(BUILD)/index.html
 
+.html.tidy.html:
+	# Tidying up html
+	if $(TIDY) -wrap 999999 -q $< > $@; then \
+        cp $@ $<; \
+    else \
+        if [ $$? -eq 2 ]; then return $$?; else cp $@ $<; fi; \
+    fi
+	# Get rid of banner
+	cat $@ | sed -e '/<meta name="generator"/d' > $<
+
 .png.static.png:
 	cp $< $@
-	# Take the SHA1 and put it into the filename, then modify main document and css
+	# Rename using SHA1
 	SHA1=`openssl sha1 $< | cut -d' ' -f2`;\
     cp $@ $*.$${SHA1}.static.png; \
 	cat $(BUILD)/index.html | sed s/$(<F)/$(*F).$${SHA1}.static.png/g > $(BUILD)/index.tmp.html

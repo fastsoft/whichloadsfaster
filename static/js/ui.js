@@ -479,18 +479,9 @@ $(window).ready(function (){
     $("#settings").dialog({
         autoOpen: false, modal: true, title: 'Settings',
         width: 400,
-        open: function () {
-            if (typeof(themes_loaded) === 'undefined') {
-                $('#switcher').themeswitcher();
-                themes_loaded = true;
-            }
-        },
         buttons: { 'OK': function () {$(this).dialog('close')} }
     });
     $('#settings-link').click(function (){$('#settings').dialog('open');});
-
-    $('head').append('<link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />');
-    $('head').append('<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>');
 
     $('#serial_parallel').buttonset();
     $('#serial, #parallel').change(function(){

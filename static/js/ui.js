@@ -254,7 +254,7 @@ build_querystring = function (racing) {
         r_escaped.push(escape(urls[1]));
     }
     var repeat_string = repeat_total ? '&times=' + repeat_total : '';
-    return our_url.split('?')[0] + '?l='+l_escaped.join(';') + '&r='+r_escaped.join(';') + repeat_string;
+    return our_url.split('?')[0].split('#')[0] + '?l='+l_escaped.join(';') + '&r='+r_escaped.join(';') + repeat_string;
 }
 
 // Parse any querystring and fill our variables

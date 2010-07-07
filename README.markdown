@@ -39,7 +39,7 @@ There is a Makefile to build and static-ify the site. It requires:
 
 ## Contact ##
 
-There's a [mailing list](http://groups.google.com/group/whichloadsfaster), 
+There's a [mailing list](http://groups.google.com/group/whichloadsfaster/), 
 which I expect could end up being more user-oriented. I'll create a dev list
 if necessary.
 

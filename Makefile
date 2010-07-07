@@ -54,7 +54,7 @@ $(BUILD)/js/all.js: $(STATIC)/index.html $(STATIC)/js/*.js
 	# Concatenate all the javascript
 	cat $(SCRIPTS) > $@
 	# Replace the script block with a reference to all.js
-	cat $(BUILD)/index.html | sed -e '/<!--JAVASCRIPT-->/,/<!--END JAVASCRIPT/ {/<script/d;}'\
+	cat $(BUILD)/index.html | sed -e '/<!--JAVASCRIPT-->/,/<!--END JAVASCRIPT/ {/script/d;}'\
     -e 's/<!--JAVASCRIPT-->/<script type="text\/javascript" src="js\/all.js"><\/script>/g' \
     -e '/<!--END JAVASCRIPT/d' > $(BUILD)/index.tmp.html
 	mv $(BUILD)/index.tmp.html $(BUILD)/index.html

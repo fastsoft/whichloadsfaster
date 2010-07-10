@@ -97,3 +97,7 @@ img { border: none; }
 #noscript { z-index: 100000; text-align: center;}
 #noscript h1 { z-index: 100001; margin: auto; margin-top: 20%; width: 500px;}
 
+.centered_buttons { text-align: center; }
+.centered_buttons button { margin-top: 1ex; padding: 5px; }
+
+#xfactor-links {position:absolute; top: 87px; right: 0;}

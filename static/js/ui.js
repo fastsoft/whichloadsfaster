@@ -194,7 +194,7 @@ after_load = function (i, j) {
             }
             reload_frames();
         } else {
-            $('#share-link').delay(1000).fadeIn();
+            $('#xfactor-links').delay(1000).fadeIn();
         }
         
         $('.load_time').hide();
@@ -212,7 +212,7 @@ after_load = function (i, j) {
 reload_frames = function () {
     duration = [0, 0];
     current_test_url = build_querystring(racing);
-    $('#share-link').hide();
+    $('#xfactor-links').hide();
     if (serial) {
         load_frame(1, 0);
     } else {
@@ -305,7 +305,6 @@ var race_input_auto_add = function () {
         }
     });
 };
-
 
 $(window).ready(function (){
 
@@ -475,6 +474,26 @@ $(window).ready(function (){
         buttons: { 'OK': function () {$(this).dialog('close')} }
     });
     $('#share-link').click(function (){$('#share').dialog('open');});
+
+    $("#more").dialog({
+        autoOpen: false, modal: true, title: 'Dig deeper',
+        width: 400,
+        open: function () {
+            var url0 = escape($('#url0').val());
+            var url1 = escape($('#url1').val());
+            // GTmetrix links
+            $('#gtmetrix0').click(function () {
+                window.open('http://gtmetrix.com/analyze.html?url=' + url0);
+                return false;
+            });
+            $('#gtmetrix1').click(function () {
+                window.open('http://gtmetrix.com/analyze.html?url=' + url1);
+                return false;
+            });
+        },
+        buttons: { 'Thanks, I\'m done!': function () {$(this).dialog('close')} }
+    });
+    $('#more-link').click(function (){$('#more').dialog('open');});
 
     $("#settings").dialog({
         autoOpen: false, modal: true, title: 'Settings',

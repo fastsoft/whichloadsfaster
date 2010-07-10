@@ -63,7 +63,10 @@ This site is a JavaScript application. Please enable JavaScript or use a browser
 </div>
 
 <div id="xfactor" class="overlay"><div>&nbsp;</div> 
-<button id="share-link" style="position:absolute; top: 85px; right: 0;">share this test!</button>
+<span id="xfactor-links">
+<button id="share-link">share this test!</button>
+<button id="more-link">more</button>
+</span>
 </div>
 <div id="average" class="overlay"><div>&nbsp; </div></div>
 
@@ -184,6 +187,43 @@ This site is a JavaScript application. Please enable JavaScript or use a browser
     <p>
         <textarea class="text ui-widget-content ui-corner-all"></textarea>
     </p>
+</div>
+
+<div id="more" style="display: none;">
+    <p>
+        See why these pages are fast or slow using 
+        <a href="http://gtmetrix.com">GTmetrix</a>, a free service that examines
+        your site and gives recommendations for how to make it faster.
+    </p>
+    <div class="centered_buttons">
+        <button id="gtmetrix0">&larr; Analyze left side</button>
+        <button id="gtmetrix1">Analyze right side &rarr;</button>
+    </div>
+
+    <p>
+        ...or you can run the tests yourself on Firefox by installing
+        Yahoo!'s <a href="http://developer.yahoo.com/yslow/">YSlow</a> or Google's 
+        <a href="http://code.google.com/speed/page-speed/">Page Speed</a> tools.
+    </p>
+
+    <h2>More goodies</h2>
+    <p>
+        
+        <b><a href="http://webpagetest.org/">
+        <img style="float:right; margin-left: 1em;" src="img/webpagetest.png"/>
+        webpagetest.org</a></b> is a community tool
+        for testing and comparing sites using donated locations across the world. You
+        can even create a video of multiple sites loading side-by-side.
+    </p>
+    <p>
+        <b><a href="http://showslow.com/">
+        <img style="float:left; margin-right: 1em;" src="img/showslow.png"/>
+showslow.com</a></b> lets you share and compare
+        <a href="http://developer.yahoo.com/yslow/">YSlow</a> and
+        <a href="http://code.google.com/speed/page-speed/">Page Speed</a> results and
+        even schedule automated tests of your own site.
+    </p>
+
 </div>
 
 <div id="settings" style="display: none;">

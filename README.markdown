@@ -6,8 +6,9 @@ Which loads faster? (developer's corner)
     They just want to know which loads faster.
     So put the pages next to each other, and let them duke it out.
 
-Ok, and we'll put in a link to <http://webpagetest.org> if they want to go
-more in-depth. Probably include some kind of Learn More dialog.
+Ok, and we'll send them to more in-depth tools as well. :)
+
+[Blog post](http://onecreativeblog.com/post/781952553/announcing-whichloadsfaster) explaining some of this madness. 
 
 ## Hacking ##
 

@@ -44,10 +44,10 @@ iframe {
 .overlay {
     display: none;
     position: absolute;
-    width: 421px;
-    height: 109px;
+    width: 547px;
+    height: 180px;
     left: 50%;
-    margin: 0 0 0 -211px;
+    margin: 0 0 0 -276px;
     padding: 17px 0 0 0;
     background: transparent url(../img/xfactor_bg.png) no-repeat top center;
     color: #C1D82F;
@@ -55,12 +55,12 @@ iframe {
     font-weight: bold;
     z-index: 10;
 }
-.overlay h2 { font-size: 36px; margin: 0; padding: 0; }
+.overlay h2 { font-size: 48px; margin: 0; padding: 20px; }
 .overlay p { font-size: 18px; margin: 0; padding: 0; }
 
 #xfactor { top: 40%; }
 #average { 
-    width: 426px;
+    width: 547px;
     height: 109px;
     bottom: 0; font-size: 18px; color: white;
     background: transparent url(../img/square_bg.png) no-repeat top center;
@@ -100,4 +100,4 @@ img { border: none; }
 .centered_buttons { text-align: center; }
 .centered_buttons button { margin-top: 1ex; padding: 5px; }
 
-#xfactor-links {position:absolute; top: 87px; right: 0;}
+#xfactor-links {position:absolute; top: 157px; right: 20px;}

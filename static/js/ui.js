@@ -12,7 +12,7 @@ var race_index = [0, 0];
 var racing = false;
 var querystring = '';
 var current_test_url = our_url;
-var serial = false;
+var serial = true;
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (str) {
@@ -88,11 +88,11 @@ comparison_txt = function (benefit) {
         left_greater = false;
     }
     var percent = Math.round(100.0 * (benefit-1));
-    var b = benefit.toPrecision(2);
+    var b = benefit.toPrecision(3);
 
     if (percent < 5) {
         return 'it\'s a tie!';
-    } else if (benefit < 2)  {
+    } else if (benefit < 1)  {
         if (left_greater) return percent + '<small>%</small> faster &rarr;';
         else return '&larr; ' + percent + '<small>%</small> faster';
     } else {
@@ -416,8 +416,8 @@ $(window).ready(function (){
             .button({icons:{primary:'ui-icon-star'}})
             .click(function (){
                 urls = $(this).attr('name').split(':');
-                $('#url0').val(urls[0]);
-                $('#url1').val(urls[1]);
+                $('#url0').val(decodeURIComponent(urls[0]));
+                $('#url1').val(decodeURIComponent(urls[1]));
                 $('#splash').dialog('close');
                 reload_frames();
             });

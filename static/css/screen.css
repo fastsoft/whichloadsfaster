@@ -41,6 +41,22 @@ iframe {
     z-index: 10; 
 }
 
+.name {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 547px;
+    height: 180px;
+    left: 50%;
+    margin: 0 0 0 -276px;
+    padding: 17px 0 0 0;
+    background: transparent url(../img/square_bg.png) no-repeat top center;
+    color: #C1D82F;
+    text-align: center;
+    font-weight: bold;
+    z-index: 10;
+}
+
 .overlay {
     display: none;
     position: absolute;
@@ -62,7 +78,7 @@ iframe {
 #average { 
     width: 547px;
     height: 109px;
-    bottom: 0; font-size: 18px; color: white;
+    top: 85px; font-size: 18px; color: white;
     background: transparent url(../img/square_bg.png) no-repeat top center;
 }
 .IE6 #average { margin-left: -165px; }

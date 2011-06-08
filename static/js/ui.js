@@ -13,6 +13,7 @@ var racing = false;
 var querystring = '';
 var current_test_url = our_url;
 var serial = true;
+var url_to_name = {};
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (str) {
@@ -36,7 +37,7 @@ load_frame = function (i, j) {
     }
 
     // Clear current frame
-    $('#frame'+i).attr('src', 'about:blank');	
+    $('#frame'+i).attr('src', 'about:blank');    
 
     // Starting timestamp
     if (!racing || race_index[i] === 0) {
@@ -49,6 +50,15 @@ load_frame = function (i, j) {
 
     // Update loading message
     $('#time' + i).html('<blink>loading...</blink>').show();
+
+    // Update name panel
+    if (url_to_name[urls[i]]) {
+        $('#name' + i).html('<h1>'+url_to_name[urls[i]]+'</h1>').show();
+        console.log(url_to_name[urls[i]]);
+    } else {
+        $('#name' + i).hide();
+    }
+
 
     // Clear overlays box
     if (repeat_total) {
@@ -143,8 +153,8 @@ after_load = function (i, j) {
         runs[pair].total_time[1] += duration[1];
         var average = runs[pair].total_time[0] / runs[pair].total_time[1];
 
-        var avg0 = (runs[pair].total_time[0] / N).toFixed(0);
-        var avg1 = (runs[pair].total_time[1] / N).toFixed(0);
+        var avg0 = (runs[pair].total_time[0] / N / 1000.0).toPrecision(3);
+        var avg1 = (runs[pair].total_time[1] / N / 1000.0).toPrecision(3);
 
         // Display benefit
         if (repeat_render) {
@@ -155,12 +165,12 @@ after_load = function (i, j) {
             // This case shows at the end of a repeat cycle
             $('#xfactor div').html(
                 '<h2>' + comparison_txt(average) + '</h2>' +
-                '<p>' + avg0 + ' ms / ' + avg1 + ' ms </p>'
+                '<p>' + avg0 + ' s / ' + avg1 + ' s </p>'
             );
             $('#average div').html(
                 '<p> Average over ' + N + ' runs: </p>' +
                 '<p>' + comparison_txt(average) + '</p>' +
-                '<p>' + avg0 + ' ms / ' + avg1 + ' ms </p>'
+                '<p>' + avg0 + ' s / ' + avg1 + ' s </p>'
             );
             $('.overlay').show();
         } 
@@ -168,14 +178,14 @@ after_load = function (i, j) {
             // This case shows for the normal single run
             $('#xfactor div').html(
                 '<h2>' + comparison_txt(benefit) + '</h2>' +
-                '<p>' + duration[0].toFixed(0) + ' ms / ' + duration[1].toFixed(0) + ' ms</p>'
+                '<p>' + (duration[0]/1000.0).toPrecision(3) + ' s / ' + (duration[1]/1000.0).toPrecision(3) + ' s</p>'
             );
             $('#xfactor').show();
             if (N>1) {
                 $('#average div').html(
                     '<p> Average over ' + N + ' runs: </p>' +
                     '<p>' + comparison_txt(average) + '</p>' +
-                    '<p>' + avg0 + ' ms / ' + avg1 + ' ms </p>'
+                    '<p>' + avg0 + ' s / ' + avg1 + ' s </p>'
                 );
                 $('#average').show();
             }
@@ -271,6 +281,7 @@ parse_querystring = function (qs) {
         var param = $.url.setUrl(qs).param(side);
         if (param) {
             var _urls = param.split(';');
+            var _urls = [decodeURIComponent(_urls[0]),decodeURIComponent(_urls[0])];
             // fill up race form
             $.each(_urls, function (j,url) {
                 $('#'+side+j).val(url);
@@ -510,6 +521,18 @@ $(window).ready(function (){
     $('button').button();
     $('.load_time').hide();
 
+    // Make a map of url to name
+    $('#matchups button').each(function () {
+        var pair = $(this).find('.ui-button-text').text().split(' vs ');
+        var left = pair[0];
+        var right = pair[1];
+        var urls = $(this).attr('name').split(':');
+        var left_url = urls[0];
+        var right_url = urls[1];
+        url_to_name[decodeURIComponent(left_url)] = left;
+        url_to_name[decodeURIComponent(right_url)] = right;
+    });
+
     // Load get parameters
 
     parse_querystring();
@@ -581,6 +604,7 @@ $(window).ready(function (){
             $('#parallel').removeAttr('checked');
             $('#serial').attr('checked', 'checked');
             $('#serial_parallel').buttonset();
+            setTimeout(function() {$('#go').trigger('click')}, 100);
             break;
         default: 
             // Auto-start if they provided URLs
@@ -607,6 +631,7 @@ $(window).ready(function (){
     // Make transparent pngs in IE6
     $('.IE6 #xfactor').supersleight({shim:'img/x.gif'});
     $('.IE6 #average').supersleight({shim:'img/x.gif'});
+
 });
 
 

@@ -2,6 +2,7 @@ var our_url = $.url.attr('source');
 var our_host = $.url.attr('host') || 'localhost';
 var start = [new Date(), new Date()];
 var duration = [null, null];
+var loading = [false, false];
 var urls = ['', ''];
 var runs = {};
 var repeat = 0;
@@ -22,6 +23,9 @@ if (!String.prototype.startsWith) {
 }
 
 load_frame = function (i, j) {
+
+    // Only accept iframe load events if this is true
+    loading[i] = true;
 
     // Figure out what our next url is
     if (racing) { $('#url'+i).val(race_urls[['l','r'][i]][race_index[i]]); }
@@ -115,6 +119,7 @@ after_load = function (i, j) {
 
     // Fix iframe bug on firefox that triggers run on load
     if (duration[i] === null) return;
+    if (loading[i] === false) return;
 
     // If we're racing and not on the last run trigger the next load and bail
     if (racing && race_index[i] < race_urls[['l','r'][i]].length - 1) {
@@ -216,7 +221,8 @@ after_load = function (i, j) {
         load_frame(j, i);
     }
 
-
+    // Prevent re-trigger on another load event
+    loading[i] = false;
 };
 
 reload_frames = function () {
@@ -321,6 +327,7 @@ $(window).ready(function (){
 
     $('#frame0').load(function () { after_load(0, 1); });
     $('#frame1').load(function () { after_load(1, 0); });
+    
 
     $('#go')
     .button({icons:{primary:'ui-icon-arrowthick-1-e'}})

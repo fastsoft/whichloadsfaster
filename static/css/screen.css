@@ -71,8 +71,8 @@ iframe {
     font-weight: bold;
     z-index: 10;
 }
-.overlay h2 { font-size: 48px; margin: 0; padding: 20px; }
-.overlay p { font-size: 18px; margin: 0; padding: 0; }
+.overlay p { font-size: 48px; margin: 0; padding: 20px; }
+.overlay h2 { font-size: 18px; margin: 0; padding: 0; }
 
 #xfactor { top: 40%; }
 #average { 

@@ -71,7 +71,7 @@ display_runs = function () {
     msg = '';
     $.each(runs, function (key, value) {
         msg += unescape(key) + '\n\n';
-        msg += 'right_ms,left_ms\n';
+        msg += 'left_ms,right_ms\n';
         $.each(value.history, function (key, value) {
             msg += value[0] + ',' + value[1] + '\n';
         });
